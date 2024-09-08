@@ -6,8 +6,9 @@ import (
 	"net"
 	"sync"
 
-	"github.com/containrrr/shoutrrr"
 	"honeypot/internal/config"
+
+	"github.com/containrrr/shoutrrr"
 )
 
 var honeypotConfig config.HoneypotConfig

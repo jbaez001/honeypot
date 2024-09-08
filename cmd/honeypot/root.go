@@ -7,11 +7,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"honeypot/internal/config"
 	"honeypot/internal/honeypot"
 	"honeypot/internal/version"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -96,8 +97,14 @@ func init() {
 	rootCmd.PersistentFlags().StringSliceVar(&honeypotConfig.ShoutUrls, "shout-urls", defaultConfig.ShoutUrls, "list of URLs to shout to")
 	rootCmd.PersistentFlags().StringSlice("honeypot", []string{}, "list of honeypots in the format protocol:port:enabled:fragile")
 
-	viper.BindPFlag("name", rootCmd.PersistentFlags().Lookup("name"))
-	viper.BindPFlag("shout-urls", rootCmd.PersistentFlags().Lookup("shout-urls"))
+	err := viper.BindPFlag("name", rootCmd.PersistentFlags().Lookup("name"))
+	if err != nil {
+		log.Printf("error binding flag 'name': %v", err)
+	}
+	err = viper.BindPFlag("shout-urls", rootCmd.PersistentFlags().Lookup("shout-urls"))
+	if err != nil {
+		log.Printf("error binding flag 'shout-urls': %v", err)
+	}
 }
 
 func parseHoneypots(honeypotStrings []string) []config.Honeypot {
@@ -126,5 +133,8 @@ func parseHoneypots(honeypotStrings []string) []config.Honeypot {
 }
 
 func main() {
-	Execute()
+	err := Execute()
+	if err != nil {
+		log.Fatalf("error executing command: %v", err)
+	}
 }
