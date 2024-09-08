@@ -46,5 +46,5 @@ echo "Building for ${GOOS}/${GOARCH} Version=${VERSION}"
 go install                                                      \
     -buildvcs=false                                             \
     -installsuffix "static"                                     \
-    -ldflags "-X $(go list -m)/pkg/version.Version=${VERSION}"  \
+    -ldflags "-X $(go list -m)/internal/version.Version=${VERSION}"  \
     ./...
