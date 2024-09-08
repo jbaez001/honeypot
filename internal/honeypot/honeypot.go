@@ -58,7 +58,7 @@ func handleConnection(cfg config.Honeypot, protocol string, port string) {
 			log.Printf("[%s] ERROR while trying to accept connection from: %v\n", protocol, err)
 			continue
 		}
-		msg := fmt.Sprintf("<%s> [%s] <- %s\n", honeypotConfig.Name, protocol, conn.RemoteAddr())
+		msg := fmt.Sprintf("<%s> [%s] <- %s", honeypotConfig.Name, protocol, conn.RemoteAddr())
 		conn.Close()
 		log.Println(msg)
 
