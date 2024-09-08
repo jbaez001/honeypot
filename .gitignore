@@ -28,3 +28,4 @@ Dockerfile.cross
 .go/*
 .container-registry.*
 .dockerfile-*
+.container-*
