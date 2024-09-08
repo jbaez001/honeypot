@@ -16,7 +16,7 @@
 BINS := honeypot
 
 # Where to push the docker image.
-REGISTRY ?= fafson/honeypot
+REGISTRY ?= fafson
 
 # This version-strategy uses git tags to set the version string
 VERSION ?= $(shell git describe --tags --always --dirty)
