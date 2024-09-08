@@ -29,12 +29,12 @@ func Start(cfg config.HoneypotConfig) {
 	var wg sync.WaitGroup
 
 	// start the honeypots (fake servers)
-	for _, server := range honeypotConfig.Honeypots {
+	for _, pot := range honeypotConfig.Honeypots {
 		wg.Add(1)
 		go func(s config.Honeypot) {
 			defer wg.Done()
-			handleConnection(server, s.Protocol, s.Port)
-		}(server)
+			handleConnection(pot)
+		}(pot)
 	}
 
 	// block until infinity 'n beyond
@@ -42,23 +42,23 @@ func Start(cfg config.HoneypotConfig) {
 	log.Println("Honeypot stopped")
 }
 
-func handleConnection(cfg config.Honeypot, protocol string, port string) {
-	listener, err := net.Listen("tcp", ":"+port)
+func handleConnection(cfg config.Honeypot) {
+	listener, err := net.Listen("tcp", ":"+cfg.Port)
 	if err != nil {
-		log.Printf("[%s] ERROR starting on port %s: %v\n", protocol, port, err)
+		log.Printf("[%s] ERROR starting on port %s: %v\n", cfg.Protocol, cfg.Port, err)
 		return
 	}
 	defer listener.Close()
 
-	log.Printf("[%s] STARTED on %s\n", protocol, port)
+	log.Printf("[%s] STARTED on %s\n", cfg.Protocol, cfg.Port)
 
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Printf("[%s] ERROR while trying to accept connection from: %v\n", protocol, err)
+			log.Printf("[%s] ERROR while trying to accept connection from: %v\n", cfg.Protocol, err)
 			continue
 		}
-		msg := fmt.Sprintf("<%s> [%s] <- %s", honeypotConfig.Name, protocol, conn.RemoteAddr())
+		msg := fmt.Sprintf("<%s> [%s] <- %s", honeypotConfig.Name, cfg.Protocol, conn.RemoteAddr())
 		conn.Close()
 		log.Println(msg)
 
@@ -68,7 +68,7 @@ func handleConnection(cfg config.Honeypot, protocol string, port string) {
 
 		// if the server is fragile, stop listening
 		if cfg.Fragile {
-			log.Printf("[%s] FRAGILE server, stopping...\n", protocol)
+			log.Printf("[%s] FRAGILE server, stopping...\n", cfg.Protocol)
 			return
 		}
 	}
