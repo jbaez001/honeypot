@@ -6,9 +6,8 @@ import (
 	"net"
 	"sync"
 
-	"honeypot/internal/config"
-
 	"github.com/containrrr/shoutrrr"
+	"github.com/jbaez001/honeypot/internal/config"
 )
 
 var honeypotConfig config.HoneypotConfig
@@ -49,7 +48,12 @@ func handleConnection(cfg config.Honeypot) {
 		log.Printf("[%s] ERROR starting on port %s: %v\n", cfg.Protocol, cfg.Port, err)
 		return
 	}
-	defer listener.Close()
+	defer func(listener net.Listener) {
+		err := listener.Close()
+		if err != nil {
+			log.Printf("[%s] ERROR closing listener: %v\n", cfg.Protocol, err)
+		}
+	}(listener)
 
 	log.Printf("[%s] STARTED on %s\n", cfg.Protocol, cfg.Port)
 
@@ -60,7 +64,10 @@ func handleConnection(cfg config.Honeypot) {
 			continue
 		}
 		msg := fmt.Sprintf("<%s> [%s] <- %s", honeypotConfig.Name, cfg.Protocol, conn.RemoteAddr())
-		conn.Close()
+		err = conn.Close()
+		if err != nil {
+			log.Printf("[%s] ERROR closing connection: %v\n", cfg.Protocol, err)
+		}
 		log.Println(msg)
 
 		if len(honeypotConfig.ShoutUrls) > 0 {

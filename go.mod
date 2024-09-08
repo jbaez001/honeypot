@@ -1,4 +1,4 @@
-module honeypot
+module github.com/jbaez001/honeypot
 
 go 1.22
 

@@ -7,10 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"honeypot/internal/config"
-	"honeypot/internal/honeypot"
-	"honeypot/internal/version"
-
+	"github.com/jbaez001/honeypot/internal/config"
+	"github.com/jbaez001/honeypot/internal/honeypot"
+	"github.com/jbaez001/honeypot/internal/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
