@@ -1,0 +1,40 @@
+name: "honeypot-1"
+shout_urls:
+  # - "telegram://token@telegram?chats=chat-idtelegram://token@telegram?chats=chat-id"
+honeypots:
+  - protocol: ftp
+    port: 21
+    enabled: true
+    fragile: false
+  - protocol: http
+    port: 80
+    enabled: true
+    fragile: false
+  - protocol: https
+    port: 443
+    enabled: true
+    fragile: false
+  - protocol: mysql
+    port: 3306
+    enabled: true
+    fragile: false
+  - protocol: telnet
+    port: 23
+    enabled: true
+    fragile: false
+  - protocol: postgres
+    port: 5432
+    enabled: true
+    fragile: false
+  - protocol: redis
+    port: 6379
+    enabled: true
+    fragile: false
+  - protocol: mongodb
+    port: 27017
+    enabled: true
+    fragile: false
+  - protocol: vnc
+    port: 5900
+    enabled: true
+    fragile: false

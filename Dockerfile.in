@@ -1,0 +1,12 @@
+FROM {ARG_FROM}
+
+ADD bin/{ARG_OS}_{ARG_ARCH}/{ARG_BIN} //usr/local/bin/{ARG_BIN}
+ADD honeypot.yaml /opt/honeypot/honeypot.yaml
+
+USER 65535:65535
+
+ENV HOME /opt/honeypot
+
+WORKDIR /opt/honeypot
+
+CMD ["{ARG_BIN}", "--config", "/opt/honeypot/config.yaml"]
